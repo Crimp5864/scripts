@@ -1,0 +1,25 @@
+#!/usr/bin/env bash
+
+word() {
+    local rand_word="${words[SRANDOM % ${#words[@]}]}"
+    printf '%s\n' "$rand_word"
+}
+
+ext() {
+    local rand_ext="${types[SRANDOM % ${#types[@]}]}"
+    printf '%s\n' "$rand_ext"
+}
+
+file() {
+    mkdir -p junk
+
+    for (( i = 0; i < count; i ++ )); do
+        touch "junk/$(word).$(ext)"
+    done
+}
+
+count="${1:-100}"
+types=(txt md rtf pdf odt csv ods xml zip jpg png gif mp3 wav acc mp4 mkv avi)
+mapfile -t words < /usr/share/dict/words
+
+file
